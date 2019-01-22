@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="htracker">
+<head>
+<meta charset="windows-1255">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>create new entry to track</h1>
+<div>
+<p>entry name</p>
+<input ng-model="listCtrl.newName"
+		placeholder="name">
+</div>
+<div>
+<p>entry type</p>
+<select ng-model="listCtrl.newType" 
+		ng-options="x for x in listCtrl.types"
+		></select>	
+</div>
+			
+<button> create</button>
+</div>
+</body>
+</html>
