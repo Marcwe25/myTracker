@@ -1,25 +1,46 @@
 package facade;
 
+import java.util.List;
+import java.util.Set;
+
 import DAODB.DAODBentry;
 import DAODB.DAODBuser;
+import DAOabstract.DAOTrackedObject;
 import DAOabstract.DAOentry;
 import DAOabstract.DAOuser;
+import beans.TrackEntry;
 import beans.User;
 
 public class userFacade {
 
-	DAOentry entryDAO;
-	DAOuser userDAO;
-	User currentUser;
+	  private User daoUser;
+
+	  private DAOentry daoEntry;
+
+	  private DAOTrackedObject daoTrackedObject;
+
 	
 	private userFacade() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	private userFacade(User user){
-		this.entryDAO = new DAODBentry(user);
-		this.userDAO = new DAODBuser();
-		this.currentUser = user;
+	public userFacade(User user){
+		this.daoUser = new DAODBuser(user);
+		this.daoEntry = new DAODBentry(user);
+		this.daoTrackedObject = new daoTrackedObject(user);
+	}
+	
+	public Set<TrackEntry> getTracketObjectsList() {
+		  return daoUser.getEntries();
+	}
+	  
+	public Set<TrackEntry> addEntry(String date, Integer quantity, String objectName, int objectValue) {
+		  daoEntry.addEntry(objectName, objectValue, date, quantity);
+		  return this.getTracketObjectsList();
+	}
+
+	public Set<TrackEntry> addTrackedObject() {
+		  return null;
 	}
 	
 	public static userFacade login(String name, String password){

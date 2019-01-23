@@ -1,49 +1,42 @@
 package beans;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 
 public class TrackEntry {
 
-	long id;
-	LocalDateTime date;
-	HashMap<String,String> trackObject;
+	Long id;
+	public String name;
+	public Integer value;
+	public HashMap<Date,Long> dateAndQuantity;
 	
-	private TrackEntry(){}
-
-	public TrackEntry(LocalDateTime date, HashMap<String, String> trackObject) {
+	public TrackEntry(String name, Integer value) {
 		super();
-		this.date = date;
-		this.trackObject = trackObject;
-	} 
-
-	public LocalDateTime getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-
-	public HashMap<String, String> getTrackObject() {
-		return trackObject;
-	}
-
-	public void setTrackObject(HashMap<String, String> trackObject) {
-		this.trackObject = trackObject;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
+		this.name = name;
+		this.value = value;
+		this.dateAndQuantity = new HashMap<Date,Long>();
 	}
 	
-	public boolean containSuffisantData(){
-		if(date == null) return false;
-		else if(trackObject == null) return false;
-		else return true;
+	public TrackEntry(long id, String name, Integer value) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.value = value;
+		this.dateAndQuantity = new HashMap<Date,Long>();
 	}
+
+	public TrackEntry(long id, String name, Integer value, HashMap<Date, Long> dateAndQuantity) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.value = value;
+		this.dateAndQuantity = dateAndQuantity;
+	}
+
+//	public boolean containSuffisantData(){
+//		if(date == null) return false;
+//		else if(trackObject == null) return false;
+//		else return true;
+//	}
 }

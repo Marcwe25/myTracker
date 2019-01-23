@@ -1,9 +1,9 @@
-package DAOabstract;
+package DAO;
 
 import java.util.HashSet;
 import java.util.List;
 
-public interface DAOentry {
+public interface DAOEntry {
 
   public List getEntryByObjectId();
 

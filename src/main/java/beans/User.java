@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User {
 	
 	long id;
 	String username;
 	String password;
-	HashSet<String> trackedEntries;
-	List<TrackEntry> entries;
+	Set<TrackEntry> entries;
 	
 	private User() {
 		super();
@@ -21,20 +21,9 @@ public class User {
 		super();
 		this.username = username;
 		this.password = password;
-		this.trackedEntries = new HashSet<>();
-		this.entries = new ArrayList<>();
+		this.entries = new HashSet<>();
 	}
 	
-	public HashSet<String> getTrackedEntries() {
-		return trackedEntries;
-	}
-
-	public void setTrackedEntries(HashSet<String> trackedEntries) {
-		this.trackedEntries = trackedEntries;
-	}
-
-	
-
 	public long getId() {
 		return id;
 	}
@@ -59,11 +48,11 @@ public class User {
 		this.password = password;
 	}
 
-	public List<TrackEntry> getEntries() {
+	public Set<TrackEntry> getEntries() {
 		return entries;
 	}
 
-	public void setEntries(List<TrackEntry> entries) {
+	public void setEntries(Set<TrackEntry> entries) {
 		this.entries = entries;
 	}
 	
