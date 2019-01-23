@@ -168,11 +168,65 @@ public class dbUtility {
 			}
 		}
 		
+		public static void createTrackedObjectTable(){
+			Connection cn = null;
+			Statement st = null;
+			try {
+				System.out.println("connecting to database...");
+				cn = ConnectionPool.getConnection();
+				st = cn.createStatement();
+				System.out.println("connected succesfully to database...");
+				System.out.println("creating table TrackedObjects in database...");
+				st.execute("create table app.TrackedObjects(id integer primary key generated always as identity, name varchar(20) unique not null, value int not null)");
+				System.out.println("table created TrackedObjects");
+				
+			} catch (SQLException | CoreException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					System.out.println("closing connection....");
+					if(st!=null){st.close();}
+					if(cn!=null){ConnectionPool.returnCon(cn);}
+					System.out.println("connection closed");
+				} catch (CoreException | SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		public static void createEntryTable(){
+			Connection cn = null;
+			Statement st = null;
+			try {
+				System.out.println("connecting to database...");
+				cn = ConnectionPool.getConnection();
+				st = cn.createStatement();
+				System.out.println("connected succesfully to database...");
+				System.out.println("creating table entry in database...");
+				st.execute("create table app.entry(id integer primary key generated always as identity, object_id integer, user_id integer, created date not null, value int not null, foreign key (object_id) references app.TrackedObjects(id),foreign key (user_id) references app.users(id) )");
+				System.out.println("table entry created");
+				
+			} catch (SQLException | CoreException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					System.out.println("closing connection....");
+					if(st!=null){st.close();}
+					if(cn!=null){ConnectionPool.returnCon(cn);}
+					System.out.println("connection closed");
+				} catch (CoreException | SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		public static void main(String[] args) {
-//			dbUtility dbu = new dbUtility();
-//			dbu.createDatabase();
+			System.out.println("vvvvvvvvvvv");
+			dbUtility dbu = new dbUtility();
+			dbu.createDatabase();
 //			dbu.turnOnBuiltInUsers();
-			createUserTable();
+//			createUserTable();
+//			createTrackedObjectTable();
+//			createEntryTable();
 
 		}
 
