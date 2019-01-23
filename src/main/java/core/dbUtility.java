@@ -220,14 +220,13 @@ public class dbUtility {
 		}
 		
 		public static void main(String[] args) {
-			System.out.println("vvvvvvvvvvv");
+			System.out.println("iiiiiiiiii");
 			dbUtility dbu = new dbUtility();
 			dbu.createDatabase();
-//			dbu.turnOnBuiltInUsers();
-//			createUserTable();
-//			createTrackedObjectTable();
-//			createEntryTable();
-
+			dbu.turnOnBuiltInUsers();
+			createUserTable();
+			createTrackedObjectTable();
+			createEntryTable();
 		}
 
 }
