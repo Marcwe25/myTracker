@@ -4,8 +4,10 @@ import beans.User;
 
 public interface DAOuser {
 
-	abstract User getUsers();
+	abstract User getUser();
 	
+	abstract User getUser(String userName, String Password);
+
 	abstract User getUser(long id);
 	
 	abstract User updateUser(User user);

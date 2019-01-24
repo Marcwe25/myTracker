@@ -33,16 +33,16 @@ public class userFacade {
 	public Set<TrackEntry> getTracketObjectsList() {
 		  return daoUser.getEntries();
 	}
-	  
+
 	public Set<TrackEntry> addEntry(String date, Integer quantity, String objectName, int objectValue) {
 		  daoEntry.addEntry(objectName, objectValue, date, quantity);
 		  return this.getTracketObjectsList();
 	}
-
+	
 	public Set<TrackEntry> addTrackedObject() {
 		  return null;
 	}
-	
+
 	public static userFacade login(String name, String password){
 		DAODBuser du = new DAODBuser();
 		userFacade uf = null;

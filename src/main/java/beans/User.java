@@ -23,6 +23,13 @@ public class User {
 		this.password = password;
 		this.entries = new HashSet<>();
 	}
+
+	public User(String username) {
+		super();
+		this.username = username;
+		this.password = null;
+		this.entries = new HashSet<>();
+	}
 	
 	public long getId() {
 		return id;
