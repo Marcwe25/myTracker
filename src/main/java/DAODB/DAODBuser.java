@@ -16,6 +16,12 @@ public class DAODBuser implements DAOuser {
 	User user;
 	
 	//constructor
+	
+	public DAODBuser() {
+		super();
+		this.user = new User();
+	}
+
 	public DAODBuser(User user) {
 		super();
 		this.user = user;
@@ -27,11 +33,12 @@ public class DAODBuser implements DAOuser {
 	}
 
 	//method
+	
 	@Override
-	public User getUser() {
-		return this.user;
+	public User getUser(){
+		return user;
 	}
-
+	
 	@Override
 	public User getUser(String userName, String Password){
 		Connection cn = null;
@@ -42,9 +49,11 @@ public class DAODBuser implements DAOuser {
 			Statement st = cn.createStatement();
 			ResultSet rs = st.executeQuery(sqls);
 			if(rs.next()){
+				long id = rs.getLong(1);
 				String name = rs.getString(2);
 				String pass = rs.getString(3);
 				user = new User(name,pass);
+				user.setId(id);
 			}
 		} catch (CoreException | SQLException e) {
 			e.printStackTrace();
@@ -77,18 +86,15 @@ public class DAODBuser implements DAOuser {
 	@Override
 	public User updateUser(User user) {
 		Connection cn = null;
+		String sqls ="";
 		try {
 			cn = ConnectionPool.getConnection();
-			String sqls = "update app.users set name='"+user.getUsername()+"' and password='"+user.getPassword()+"where id="+user.getId()+"'";
+			sqls = "update app.users set name='"+user.getUsername()+"' , password='"+user.getPassword()+"' where id="+user.getId();
 			Statement st = cn.createStatement();
-			ResultSet rs = st.executeQuery(sqls);
-			if(rs.next()){
-				String name = rs.getString(2);
-				String pass = rs.getString(3);
-				user = new User(name,pass);
-			}
+			st.execute(sqls);
 		} catch (CoreException | SQLException e) {
 			e.printStackTrace();
+			System.out.println(sqls);
 		}
 		
 		return user;
@@ -97,18 +103,16 @@ public class DAODBuser implements DAOuser {
 	@Override
 	public User addUser(User user) {
 		Connection cn = null;
+		String sqls = "";
 		try {
 			cn = ConnectionPool.getConnection();
-			String sqls = "insert into app.users  (name=,password) values ('"+user.getUsername()+"','"+user.getPassword()+")'";
+			sqls = "insert into app.users  (name,password) values ('"+user.getUsername()+"','"+user.getPassword()+"')";
 			Statement st = cn.createStatement();
-			ResultSet rs = st.executeQuery(sqls);
-			if(rs.next()){
-				String name = rs.getString(2);
-				String pass = rs.getString(3);
-				user = new User(name,pass);
-			}
+			boolean rs = st.execute(sqls);
+
 		} catch (CoreException | SQLException e) {
 			e.printStackTrace();
+			System.err.println(sqls);
 		}
 		
 		return user;
@@ -119,7 +123,12 @@ public class DAODBuser implements DAOuser {
 
 	public static void main(String[] args) {
 		DAODBuser du = new DAODBuser();
-		User user = du.getUser("admin","123");
+		User user = du.getUser("admin", "123");
+//		du.addUser(new User("admin","123"));
+//		User user = du.getUser("admin","123");
 		System.out.println(user.getUsername());
+		System.out.println(user.getId());
+		System.out.println("entries:");
+		System.out.println(user.getEntries());
 	}
 }

@@ -13,7 +13,7 @@ import beans.User;
 
 public class userFacade {
 
-	  private User daoUser;
+	  private DAOuser daoUser;
 
 	  private DAOentry daoEntry;
 
@@ -27,7 +27,7 @@ public class userFacade {
 	public userFacade(User user){
 		this.daoUser = new DAODBuser(user);
 		this.daoEntry = new DAODBentry(user);
-		this.daoTrackedObject = new daoTrackedObject(user);
+		this.daoTrackedObject = new DAOTrackedObject(user);
 	}
 	
 	public Set<TrackEntry> getTracketObjectsList() {

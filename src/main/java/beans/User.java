@@ -1,9 +1,6 @@
 package beans;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class User {
@@ -13,10 +10,7 @@ public class User {
 	String password;
 	Set<TrackEntry> entries;
 	
-	private User() {
-		super();
-	}
-	
+
 	public User(String username, String password) {
 		super();
 		this.username = username;
@@ -31,6 +25,9 @@ public class User {
 		this.entries = new HashSet<>();
 	}
 	
+	public User() {
+	}
+
 	public long getId() {
 		return id;
 	}
