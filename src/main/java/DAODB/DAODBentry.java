@@ -11,7 +11,7 @@ import java.util.Set;
 import org.apache.catalina.tribes.util.Arrays;
 
 import DAOabstract.DAOentry;
-import beans.TrackEntry;
+import beans.TrackedObject;
 import beans.User;
 import core.ConnectionPool;
 import core.CoreException;
@@ -35,7 +35,7 @@ public class DAODBentry implements DAOentry {
 	}
 
 	@Override
-	public TrackEntry addEntry(TrackEntry trackEntry) {
+	public TrackedObject addEntry(TrackedObject trackEntry) {
 		Connection cn = null;
 		try {
 			cn = ConnectionPool.getConnection();
@@ -59,13 +59,13 @@ public class DAODBentry implements DAOentry {
 	}
 
 	@Override
-	public TrackEntry removeTrackEntry(Long id) {
+	public TrackedObject removeTrackEntry(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public TrackEntry getEntry(Long id) {
+	public TrackedObject getEntry(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -77,7 +77,7 @@ public class DAODBentry implements DAOentry {
 		user.getTrackedEntries().add("green");
 		user.getTrackedEntries().add("rose");
 		user.getTrackedEntries().add("green");
-		TrackEntry te = new TrackEntry(LocalDateTime.now(), new HashMap<String, String>());
+		TrackedObject te = new TrackedObject(LocalDateTime.now(), new HashMap<String, String>());
 		te.getTrackObject().put("blue", "586");
 		te.getTrackObject().put("green", "6456");
 		DAODBentry dd = new DAODBentry(user);

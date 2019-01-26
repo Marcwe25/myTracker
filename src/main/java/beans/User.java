@@ -8,7 +8,7 @@ public class User {
 	long id;
 	String username;
 	String password;
-	Set<TrackEntry> entries;
+	Set<TrackedObject> entries;
 	
 
 	public User(String username, String password) {
@@ -52,11 +52,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<TrackEntry> getEntries() {
+	public Set<TrackedObject> getEntries() {
 		return entries;
 	}
 
-	public void setEntries(Set<TrackEntry> entries) {
+	public void setEntries(Set<TrackedObject> entries) {
 		this.entries = entries;
 	}
 	

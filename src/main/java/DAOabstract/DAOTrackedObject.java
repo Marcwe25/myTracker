@@ -1,11 +1,13 @@
 package DAOabstract;
 
+import beans.TrackedObject;
+
 public interface DAOTrackedObject {
 
-  public void getTrackedObjectById();
+  public TrackedObject getrackedObjectById(Long id);
 
-  public void removeTrackedObject(Long id);
+  public void removeObject(Long id);
 
-  public void getTrackedObjectByNameAndValue();
+  public TrackedObject getrackedObjectByNameAndValue(String name, int value);
 
 }

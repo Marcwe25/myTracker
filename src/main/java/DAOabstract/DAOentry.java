@@ -3,9 +3,11 @@ package DAOabstract;
 import java.util.HashSet;
 import java.util.List;
 
+import beans.TrackedObject;
+
 public interface DAOentry {
 
-  public List getEntryByObjectId();
+  public List<TrackedObject> getEntryByTrackedObjectId();
 
   public void getEntryByUserId();
 

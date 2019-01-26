@@ -8,7 +8,7 @@ import DAODB.DAODBuser;
 import DAOabstract.DAOTrackedObject;
 import DAOabstract.DAOentry;
 import DAOabstract.DAOuser;
-import beans.TrackEntry;
+import beans.TrackedObject;
 import beans.User;
 
 public class userFacade {
@@ -17,7 +17,7 @@ public class userFacade {
 
 	  private DAOentry daoEntry;
 
-	  private DAOTrackedObject daoTrackedObject;
+	  private DAOTrackedObject daoDAOTrackedObject;
 
 	
 	private userFacade() {
@@ -27,19 +27,19 @@ public class userFacade {
 	public userFacade(User user){
 		this.daoUser = new DAODBuser(user);
 		this.daoEntry = new DAODBentry(user);
-		this.daoTrackedObject = new DAOTrackedObject(user);
+		this.daoDAOTrackedObject = new DAOTrackedObject(user);
 	}
 	
-	public Set<TrackEntry> getTracketObjectsList() {
+	public Set<TrackedObject> getTracketTrackedObjectsList() {
 		  return daoUser.getEntries();
 	}
 
-	public Set<TrackEntry> addEntry(String date, Integer quantity, String objectName, int objectValue) {
+	public Set<TrackedObject> addEntry(String date, Integer quantity, String objectName, int objectValue) {
 		  daoEntry.addEntry(objectName, objectValue, date, quantity);
-		  return this.getTracketObjectsList();
+		  return this.getTracketTrackedObjectsList();
 	}
 	
-	public Set<TrackEntry> addTrackedObject() {
+	public Set<TrackedObject> addTrackedTrackedObject() {
 		  return null;
 	}
 
