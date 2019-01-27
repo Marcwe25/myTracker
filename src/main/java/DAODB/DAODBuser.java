@@ -104,11 +104,18 @@ public class DAODBuser implements DAOuser {
 	public User addUser(User user) {
 		Connection cn = null;
 		String sqls = "";
+		Long id =-1l;
 		try {
 			cn = ConnectionPool.getConnection();
 			sqls = "insert into app.users  (name,password) values ('"+user.getUsername()+"','"+user.getPassword()+"')";
+			Statement pt = cn.createStatement();
+			boolean rs = pt.execute(sqls);
+			String str = "SELECT IDENTITY_VAL_LOCAL() FROM app.users";
 			Statement st = cn.createStatement();
-			boolean rs = st.execute(sqls);
+			rs = st.executeQuery(str);
+			while(rs.next()){
+				id = rs.getLong(1);
+			}
 
 		} catch (CoreException | SQLException e) {
 			e.printStackTrace();

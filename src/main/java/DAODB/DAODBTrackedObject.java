@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import DAOabstract.DAOTrackedObject;
 import beans.TrackedObject;
@@ -98,5 +99,32 @@ public class DAODBTrackedObject implements DAOTrackedObject {
 			}
 		}
 		return to;
+	}
+
+	@Override
+	public Long createTrackedObject(String name, String value) {
+		Connection cn = null;
+		String sql = "insert into app.trackedobject (name,value) values (?,?)";
+		Long id = -1l;
+		try {
+			cn = ConnectionPool.getConnection();
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.execute();
+			String str = "SELECT IDENTITY_VAL_LOCAL() FROM app.trackedobject";
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery(str);
+			while(rs.next()){
+				id = rs.getLong(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ConnectionPool.returnCon(cn);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
+		return id;
 	}
 }

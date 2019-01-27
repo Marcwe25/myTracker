@@ -2,50 +2,112 @@ package DAODB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Set;
-
-import org.apache.catalina.tribes.util.Arrays;
-
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import DAOabstract.DAOentry;
-import beans.TrackedObject;
-import beans.User;
+import beans.entry;
 import core.ConnectionPool;
 import core.CoreException;
 
 public class DAODBentry implements DAOentry {
 
-	Statement statement;
 	
-	
-	public DAODBentry(User user) {
-		super();
-		Set<String> te = user.getTrackedEntries();
-		String[] tea = new String[te.size()];
-		te.toArray(tea);
-		String[] sa = new String[3+te.size()];
-		sa[0]="app.tracked";
-		sa[1]="id";
-		sa[2]="date";
-		System.arraycopy(tea, 0, sa, 3, tea.length);
-		this.statement = new Statement(sa);
+	public static void main(String[] args) {}
+
+	@Override
+	public List<entry> getEntryByTrackedObjectId(Long id) {
+		List<entry> ls = null;
+		Connection cn = null;
+		String sqls = "";
+		try {
+			cn = ConnectionPool.getConnection();
+			sqls = "select * from app.entry where object_id=?";
+			cn = ConnectionPool.getConnection();
+			PreparedStatement ps = cn.prepareStatement(sqls);
+			ps.setLong(1, id);
+			ResultSet rs = ps.executeQuery();
+			ls = new ArrayList<>();
+			while(rs.next()){
+				long nid = rs.getLong("id");
+				long objectId = rs.getLong("object_id");
+				long userId = rs.getLong("user_id");
+				java.util.Date date = rs.getDate("created");
+				int quantity = rs.getInt("value");
+				beans.entry entry = new entry();
+				entry.setId(nid);
+				entry.setObjectId(objectId);
+				entry.setUserId(userId);
+				entry.setDate(date);
+				entry.setQuantity(quantity);
+				ls.add(entry);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ConnectionPool.returnCon(cn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ls;
 	}
 
 	@Override
-	public TrackedObject addEntry(TrackedObject trackEntry) {
+	public List<entry> getEntryByUserId(Long id) {
+		List<entry> ls = null;
 		Connection cn = null;
+		String sqls = "";
 		try {
 			cn = ConnectionPool.getConnection();
-			PreparedStatement ps = cn.prepareStatement(statement.create());
-			ps.setTimestamp(1, Timestamp.valueOf(trackEntry.getDate()));
-			for(int i=0;i<statement.otherColumns.length;i++){
-				ps.setString(i+2, trackEntry.getTrackObject().get(statement.otherColumns[i]));
+			sqls = "select * from app.entry where user_id=?";
+			cn = ConnectionPool.getConnection();
+			PreparedStatement ps = cn.prepareStatement(sqls);
+			ps.setLong(1, id);
+			ResultSet rs = ps.executeQuery();
+			ls = new ArrayList<>();
+			while(rs.next()){
+				long nid = rs.getLong("id");
+				long objectId = rs.getLong("object_id");
+				long userId = rs.getLong("user_id");
+				java.util.Date date = rs.getDate("created");
+				int quantity = rs.getInt("value");
+				beans.entry entry = new entry();
+				entry.setId(nid);
+				entry.setObjectId(objectId);
+				entry.setUserId(userId);
+				entry.setDate(date);
+				entry.setQuantity(quantity);
+				ls.add(entry);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ConnectionPool.returnCon(cn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ls;
+	}
+
+	@Override
+	public void removeEntry(Long id) {
+		Connection cn = null;
+		String sqls = "";
+		try {
+			cn = ConnectionPool.getConnection();
+			sqls = "delete from table app.entry where id=?";
+			PreparedStatement ps = cn.prepareStatement(sqls);
+			ps.setLong(1, id);
 			ps.execute();
-		} catch (CoreException | SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -55,34 +117,39 @@ public class DAODBentry implements DAOentry {
 			}
 		}
 		
-		return null;
 	}
 
 	@Override
-	public TrackedObject removeTrackEntry(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Long addEntry(Long object_id, Long user_id, Date date, int quantity) {
+		long id =-1l;
+		Connection cn = null;
+		String sqls = "insert into app.entry (object_id,user_id,created,value) values (?,?,?,?)";
+		try {
+			cn = ConnectionPool.getConnection();
+			PreparedStatement ps = cn.prepareStatement(sqls);
+			ps.setLong(1, object_id);
+			ps.setLong(2, user_id);
+			ps.setDate(3, new java.sql.Date(date.getTime()));
+			ps.setInt(4, quantity);
+			ps.execute();
+			String str = "SELECT IDENTITY_VAL_LOCAL() FROM app.entry";
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery(str);
+			while(rs.next()){
+				id = rs.getLong(1);
+			}
 
-	@Override
-	public TrackedObject getEntry(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public static void main(String[] args) {
-		User user = new User("aa","bb");
-		user.getTrackedEntries().add("blue");
-		user.getTrackedEntries().add("green");
-		user.getTrackedEntries().add("green");
-		user.getTrackedEntries().add("rose");
-		user.getTrackedEntries().add("green");
-		TrackedObject te = new TrackedObject(LocalDateTime.now(), new HashMap<String, String>());
-		te.getTrackObject().put("blue", "586");
-		te.getTrackObject().put("green", "6456");
-		DAODBentry dd = new DAODBentry(user);
-		dd.addEntry(te);
-		System.out.println(dd.statement.create());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ConnectionPool.returnCon(cn);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return id;
 	}
 
 }
