@@ -11,7 +11,7 @@ import DAOabstract.DAOuser;
 import beans.TrackedObject;
 import beans.User;
 
-public class userFacade {
+public class  n {
 
 	  private DAOuser daoUser;
 
