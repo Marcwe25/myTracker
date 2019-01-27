@@ -127,4 +127,8 @@ public class DAODBTrackedObject implements DAOTrackedObject {
 		}
 		return id;
 	}
+	
+	public static void main(String[] args) {
+		
+	}
 }
