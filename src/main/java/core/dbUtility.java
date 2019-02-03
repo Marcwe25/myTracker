@@ -228,6 +228,26 @@ public class dbUtility {
 			}
 		}
 		
+		public static void createFrequencyTable(){
+			
+			Connection cn = null;
+			String sql = "create table app.frequency(user_id integer, object_id integer, frequecy varchar(65), foreign key (object_id) references app.TrackedObjects(id), foreign key (user_id) references app.users(id), primary key (user_id,object_id))";
+			try {
+				cn =ConnectionPool.getConnection();
+				Statement st = cn.createStatement();
+				st.execute(sql);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					ConnectionPool.returnCon(cn);
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
 		public void addData(){
 			DAODBTrackedObject dt = new DAODBTrackedObject();
 			dt.createTrackedObject("vit k", 200, "vitamine");
@@ -251,16 +271,19 @@ public class dbUtility {
 //			dbu.createDatabase();
 //			dbu.turnOnBuiltInUsers();
 //			createUserTable();
+//			createTrackedObjectTable();
+//			createEntryTable();
+//			dbu.addData();
+//			DAODBTrackedObject dt = new DAODBTrackedObject();
+//			dt.updateTrackedObject(2l, "fod", 4, "go");
+//			DAODBentry de = new DAODBentry();
+//			List<Entry> ls = de.getEntryByUserIdAfter(101l, new java.util.Date());
+//			for (Entry entry : ls){
+//				System.out.println(entry);
+//			}
 			createTrackedObjectTable();
 			createEntryTable();
-			dbu.addData();
-			DAODBTrackedObject dt = new DAODBTrackedObject();
-			dt.updateTrackedObject(2l, "fod", 4, "go");
-			DAODBentry de = new DAODBentry();
-			List<Entry> ls = de.getEntryByUserIdAfter(101l, new java.util.Date());
-			for (Entry entry : ls){
-				System.out.println(entry);
-			}
+			createFrequencyTable();
 		}
 
 }
