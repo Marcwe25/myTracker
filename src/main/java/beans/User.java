@@ -59,6 +59,11 @@ public class User {
 	public void setEntries(Set<TrackedObject> entries) {
 		this.entries = entries;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", entries=" + entries + "]";
+	}
 	
 	
 
