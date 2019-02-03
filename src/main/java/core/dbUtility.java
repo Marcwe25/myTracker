@@ -1,6 +1,15 @@
 package core;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+
+import DAODB.DAODBTrackedObject;
+import DAODB.DAODBentry;
+import DAODB.DAODBuser;
+import beans.Entry;
+import beans.User;
+
 import java.sql.*;
 
 public class dbUtility {
@@ -177,7 +186,7 @@ public class dbUtility {
 				st = cn.createStatement();
 				System.out.println("connected succesfully to database...");
 				System.out.println("creating table TrackedObjects in database...");
-				st.execute("create table app.TrackedObjects(id integer primary key generated always as identity, name varchar(20) unique not null, value int not null)");
+				st.execute("create table app.TrackedObjects(id integer primary key generated always as identity, name varchar(20) unique not null, value int not null, category varchar(20), target int,frequency varchar(62))");
 				System.out.println("table created TrackedObjects");
 				
 			} catch (SQLException | CoreException e) {
@@ -202,7 +211,7 @@ public class dbUtility {
 				st = cn.createStatement();
 				System.out.println("connected succesfully to database...");
 				System.out.println("creating table entry in database...");
-				st.execute("create table app.entry(id integer primary key generated always as identity, object_id integer, user_id integer, created date not null, value int not null, foreign key (object_id) references app.TrackedObjects(id),foreign key (user_id) references app.users(id) )");
+				st.execute("create table app.entry(id integer primary key generated always as identity, object_id integer, user_id integer, created timestamp not null, value int not null, foreign key (object_id) references app.TrackedObjects(id),foreign key (user_id) references app.users(id) )");
 				System.out.println("table entry created");
 				
 			} catch (SQLException | CoreException e) {
@@ -219,14 +228,39 @@ public class dbUtility {
 			}
 		}
 		
+		public void addData(){
+			DAODBTrackedObject dt = new DAODBTrackedObject();
+			dt.createTrackedObject("vit k", 200, "vitamine");
+			dt.createTrackedObject("vit a", 200, "vitamine");
+			dt.createTrackedObject("vit b", 400, "vitamine");
+			dt.createTrackedObject("vit c", 500, "vitamine");
+//			DAODBuser du = new DAODBuser();
+//			du.addUser(new User("marc", "456"));
+			DAODBentry de = new DAODBentry();
+			de.addEntry(new Entry(2l,1l,new java.util.Date(),3));
+			de.addEntry(new Entry(2l,101l,new java.util.Date(),7));
+			de.addEntry(new Entry(3l,101l,new java.util.Date(),4));
+			de.addEntry(new Entry(4l,1l,new java.util.Date(),2));
+			
+			
+		}
+		
 		public static void main(String[] args) {
 			System.out.println("iiiiiiiiii");
 			dbUtility dbu = new dbUtility();
 //			dbu.createDatabase();
 //			dbu.turnOnBuiltInUsers();
-			createUserTable();
+//			createUserTable();
 			createTrackedObjectTable();
 			createEntryTable();
+			dbu.addData();
+			DAODBTrackedObject dt = new DAODBTrackedObject();
+			dt.updateTrackedObject(2l, "fod", 4, "go");
+			DAODBentry de = new DAODBentry();
+			List<Entry> ls = de.getEntryByUserIdAfter(101l, new java.util.Date());
+			for (Entry entry : ls){
+				System.out.println(entry);
+			}
 		}
 
 }

@@ -20,7 +20,7 @@ public class DAODBTrackedObject implements DAOTrackedObject {
 		TrackedObject ob = null;
 		try{
 			cn = ConnectionPool.getConnection();
-			sqls = "select * from app.Object where id=?";
+			sqls = "select * from app.trackedobjects where id=?";
 			PreparedStatement ps = cn.prepareStatement(sqls);
 			ps.setLong(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -47,7 +47,7 @@ public class DAODBTrackedObject implements DAOTrackedObject {
 	}
 
 	@Override
-	public void removeObject(Long id) {
+	public void removeTrackedObject(Long id) {
 		Connection cn = null;
 		String sqls = "";
 		try{
@@ -102,15 +102,18 @@ public class DAODBTrackedObject implements DAOTrackedObject {
 	}
 
 	@Override
-	public Long createTrackedObject(String name, String value) {
+	public Long createTrackedObject(String name, int value, String category) {
 		Connection cn = null;
-		String sql = "insert into app.trackedobject (name,value) values (?,?)";
+		String sql = "insert into app.trackedobjects (name,value,category) values (?,?,?)";
 		Long id = -1l;
 		try {
 			cn = ConnectionPool.getConnection();
 			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, value);
+			ps.setString(3, category);
 			ps.execute();
-			String str = "SELECT IDENTITY_VAL_LOCAL() FROM app.trackedobject";
+			String str = "SELECT IDENTITY_VAL_LOCAL() FROM app.trackedobjects";
 			Statement st = cn.createStatement();
 			ResultSet rs = st.executeQuery(str);
 			while(rs.next()){
@@ -130,5 +133,28 @@ public class DAODBTrackedObject implements DAOTrackedObject {
 	
 	public static void main(String[] args) {
 		
+	}
+
+	@Override
+	public void updateTrackedObject(Long id, String name, int value, String category) {
+		Connection cn = null;
+		String sql = "update app.trackedobjects set name=?, value=?, category=? where id=?";
+		try {
+			cn = ConnectionPool.getConnection();
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setInt(2, value);
+			ps.setString(3, category);
+			ps.setLong(4, id);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ConnectionPool.returnCon(cn);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

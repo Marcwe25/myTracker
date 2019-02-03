@@ -2,17 +2,29 @@ package beans;
 
 import java.util.Date;
 
-public class entry {
+public class Entry {
 
-	public Long id;
+	private Long id;
 
-	public Long objectId;
+	private Long objectId;
 
-	public Long userId;
+	private Long userId;
 
-	public Date date;
+	private Date date;
 
-	public int quantity;
+	private int quantity;
+
+	public Entry() {
+		super();
+	}
+
+	public Entry(Long objectId, Long userId, Date date, int quantity) {
+		super();
+		this.objectId = objectId;
+		this.userId = userId;
+		this.date = date;
+		this.quantity = quantity;
+	}
 
 	public Long getId() {
 		return id;
@@ -52,6 +64,12 @@ public class entry {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return "Entry [id=" + id + ", objectId=" + objectId + ", userId=" + userId + ", date=" + date + ", quantity="
+				+ quantity + "]";
 	}
 
 }
